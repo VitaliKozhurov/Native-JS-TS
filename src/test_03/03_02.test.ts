@@ -1,4 +1,5 @@
-import {CityType} from "./02.type";
+import {CityType} from "../test_02/02.type";
+import {addMoneyToBudget, decreiseFireStaff, increiseFireStaff, repairHouse} from "./03";
 
 let city: CityType;
 
@@ -50,7 +51,7 @@ beforeEach(() => {
             {
                 type: "FIRE-STATION",
                 budget: 50000,
-                staffCount: 1000,
+                staffCount: 200,
                 address: {
                     street: {
                         title: 'South Str'
@@ -62,39 +63,33 @@ beforeEach(() => {
     }
 })
 
-// 01. Create type CityType
-// 02. Full object city and complete tests
 
-test('city should contains 3 houses', () => {
-    expect(city.houses.length).toBe(3);
+test('Budget should be changed for HOSPITAL', () => {
+    addMoneyToBudget(city.governmentBuilding[0], 10000);
 
-    expect(city.houses[0].buildedAt).toBe(2012);
-    expect(city.houses[0].repaired).toBe(false);
-    expect(city.houses[0].address.number).toBe(100);
-    expect(city.houses[0].address.street.title).toBe('White street');
-
-    expect(city.houses[1].buildedAt).toBe(2008);
-    expect(city.houses[1].repaired).toBe(false);
-    expect(city.houses[1].address.number).toBe(100);
-    expect(city.houses[1].address.street.title).toBe('Happy street');
-
-    expect(city.houses[2].buildedAt).toBe(2020);
-    expect(city.houses[2].repaired).toBe(false);
-    expect(city.houses[2].address.number).toBe(101);
-    expect(city.houses[2].address.street.title).toBe('Happy street');
+    expect(city.governmentBuilding[0].budget).toBe(30000);
 })
 
+test('Budget should be changed for FIRE_STATION', () => {
+    addMoneyToBudget(city.governmentBuilding[1], 10000);
 
-test('city should contains hospital and fire station', () => {
-    expect(city.governmentBuilding.length).toBe(2);
+    expect(city.governmentBuilding[1].budget).toBe(60000);
+})
 
-    expect(city.governmentBuilding[0].type).toBe("HOSPITAL");
-    expect(city.governmentBuilding[0].budget).toBe(20000);
-    expect(city.governmentBuilding[0].staffCount).toBe(200);
-    expect(city.governmentBuilding[0].address.street.title).toBe('Central Str');
+test('house should be repaired', () => {
+    repairHouse(city.houses[1]);
 
-    expect(city.governmentBuilding[1].type).toBe('FIRE-STATION');
-    expect(city.governmentBuilding[1].budget).toBe(50000);
-    expect(city.governmentBuilding[1].staffCount).toBe(1000);
-    expect(city.governmentBuilding[1].address.street.title).toBe('South Str');
+    expect(city.houses[1].repaired).toBeTruthy();
+})
+
+test('fire-staff should be decreise', () => {
+    decreiseFireStaff(city.governmentBuilding[1], 20);
+
+    expect(city.governmentBuilding[1].staffCount).toBe(180);
+})
+
+test('fire-staff should be increise', () => {
+    increiseFireStaff(city.governmentBuilding[1], 20);
+
+    expect(city.governmentBuilding[1].staffCount).toBe(220);
 })

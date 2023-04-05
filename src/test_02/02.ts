@@ -1,7 +1,7 @@
 // "isolatedModules": false,
 // Необходимо в ts-config менять если ошибка по импорту
 
-type StydentType = {
+export type StudentType = {
     id: number
     name: string
     age: number
@@ -28,7 +28,7 @@ type TechnologyType = {
 }
 
 
-const student: StydentType = {
+export const student: StudentType = {
     id: 1,
     name: 'Vitalik',
     age: 30,

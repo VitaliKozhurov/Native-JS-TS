@@ -3,14 +3,15 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {sum} from "./test_01/01";
+import {sum} from './test_01/01';
+import {User} from './callBack/06-callBack';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
     <React.StrictMode>
-        <App/>
+        <User />
     </React.StrictMode>
 );
 

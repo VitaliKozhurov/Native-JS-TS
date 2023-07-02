@@ -47,33 +47,3 @@
     border: 1px solid black;
     padding: 30px;
 }
-
-.form input, label {
-    margin-bottom: 20px;
-}
-
-.form label {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-
-.form input {
-    padding: 5px 15px;
-    font-size: 24px;
-}
-
-.form button {
-    font-size: 22px;
-    width: 140px;
-    margin: 50px auto 0;
-    padding: 10px;
-}
-
-.error {
-    color: red;
-    text-align: left;
-    position: relative;
-    left: 10px;
-    top: -20px
-}

@@ -1,6 +1,8 @@
 import React from 'react';
-import {Formik, Form, Field, ErrorMessage} from 'formik';
+import {Formik, Form, Field, ErrorMessage, FieldConfig, FieldProps} from 'formik';
 import * as Yup from 'yup';
+import s from './Form.module.css'
+import {ErrorField} from './ErrorField';
 
 type FormType = {
     name: string
@@ -11,7 +13,14 @@ type FormType = {
 const initialValues = {
     name: '',
     email: '',
-    channel: ''
+    channel: '',
+    comments: '',
+    address: '',
+    social: {
+        facebook: '',
+        twitter: ''
+    },
+    phoneNumbers: ['', '']
 }
 const onFormSubmit = (values: FormType) => {
     // Отправка данных формы на сервер
@@ -33,25 +42,76 @@ export const FormWithFormik = () => {
             onSubmit={onFormSubmit}
         >
             <Form className={'form'}>
-                <label htmlFor="name">Name</label>
-                <Field type="text" id="name" name="name" />
-                <div className={'error'}>
-                    <ErrorMessage name="name" />
+                <div className={s.inputForm}>
+                    <label htmlFor="name">Name</label>
+                    <Field type="text" id="name" name="name" />
+                    {/*Используем атрибут компонент для того, чтобы обернуть ErrorMessage в тег или компонент children-ом для которого будет ErrorMessage*/}
+                    <ErrorMessage name="name" component={ErrorField} />
                 </div>
 
-                <label htmlFor="email">E-mail</label>
-                <Field type="text" id="email" name="email" />
-                <div className={'error'}>
-                    <ErrorMessage name="email" />
+                <div className={s.inputForm}>
+                    <label htmlFor="email">E-mail</label>
+                    <Field type="text" id="email" name="email" />
+                    <ErrorMessage name="email" component={ErrorField} />
                 </div>
 
-                <label htmlFor="channel">Channel</label>
-                <Field type="text" id="channel" name="channel" />
-                <div className={'error'}>
-                    <ErrorMessage name="channel" />
+                <div className={s.inputForm}>
+                    <label htmlFor="channel">Channel</label>
+                    <Field type="text" id="channel" name="channel" />
+                    <ErrorMessage name="channel" component={ErrorField} />
                 </div>
 
-                <button type={'submit'}>Submit</button>
+                <div className={s.inputForm}>
+                    <label htmlFor="comments">Comments</label>
+                    {/*Для того чтобы сделать текстовое поле, необходимо прописать as='textarea', тем самым мы определяем поле как текстовое */}
+                    <Field as="textarea" id="comments" name="comments" />
+                </div>
+
+
+                {/*<div className={s.inputForm}>*/}
+                {/*    <label htmlFor="address">Address</label>*/}
+                {/*    /!*Можно так же передать в children функцию коллбек, которая будет принимать объект пропс с методами и свойствами formik*!/*/}
+                {/*    <Field name="address">*/}
+                {/*        {(props: {*/}
+                {/*            field: FieldProps['field'];*/}
+                {/*            form: FieldProps['form'];*/}
+                {/*            meta: FieldProps['meta'];*/}
+                {/*        }) => {*/}
+                {/*            const {field, form, meta} = props;*/}
+                {/*            // field -- name, value, onChange, onBlur*/}
+                {/*            // meta -- error, initialError, initialTouched, initialValue, touched, value*/}
+                {/*            return <div>*/}
+                {/*                <input id={'address'} {...field} />*/}
+                {/*                {meta.touched && meta.error*/}
+                {/*                    ? <div>{meta.error}</div>*/}
+                {/*                    : null}*/}
+                {/*            </div>*/}
+                {/*        }}*/}
+                {/*    </Field>*/}
+                {/*</div>*/}
+
+                {/*Можно группировать данные формы в отдельные объекты, теперь при сабмите в поле social будет поле facebook и twitter*/}
+                <div className={s.inputForm}>
+                    <label htmlFor="facebook">Facebook profile</label>
+                    <Field type="text" id="facebook" name="social.facebook" />
+                </div>
+                <div className={s.inputForm}>
+                    <label htmlFor="twitter">Twitter profile</label>
+                    <Field type="text" id="twitter" name="social.twitter" />
+                </div>
+
+
+                {/*Массив данных, можно сгруппировать данные в массив*/}
+                <div className={s.inputForm}>
+                    <label htmlFor="primaryPh">Primary phone number</label>
+                    <Field type="text" id="primaryPh" name="phoneNumbers[0]" />
+                </div>
+                <div className={s.inputForm}>
+                    <label htmlFor="secondaryPh">Secondary phone number</label>
+                    <Field type="text" id="secondaryPh" name="phoneNumbers[1]" />
+                </div>
+
+                <button className={s.button} type={'submit'}>Submit</button>
             </Form>
         </Formik>
     )

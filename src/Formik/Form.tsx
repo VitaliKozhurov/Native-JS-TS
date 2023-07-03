@@ -1,8 +1,10 @@
 import React from 'react';
-import {Formik, Form, Field, ErrorMessage, FieldConfig, FieldProps} from 'formik';
+import {Formik, Form, Field, ErrorMessage, FieldArray, FieldArrayRenderProps} from 'formik';
 import * as Yup from 'yup';
 import s from './Form.module.css'
 import {ErrorField} from './ErrorField';
+import {ArrayHelpers} from 'formik/dist/FieldArray';
+
 
 type FormType = {
     name: string
@@ -20,7 +22,8 @@ const initialValues = {
         facebook: '',
         twitter: ''
     },
-    phoneNumbers: ['', '']
+    phoneNumbers: ['', ''],
+    phNumbers: ['']
 }
 const onFormSubmit = (values: FormType) => {
     // Отправка данных формы на сервер
@@ -109,6 +112,40 @@ export const FormWithFormik = () => {
                 <div className={s.inputForm}>
                     <label htmlFor="secondaryPh">Secondary phone number</label>
                     <Field type="text" id="secondaryPh" name="phoneNumbers[1]" />
+                </div>
+
+                {/*Создание динамических полей*/}
+                <div className={s.inputForm}>
+                    <label>List of phone numbers</label>
+                    <FieldArray name="phNumbers">
+                        {
+                            (fieldArrProps: FieldArrayRenderProps) => {
+                                const {push, remove, form} = fieldArrProps;
+                                const {values} = form;
+                                const phNumbers = values.phNumbers as string[];
+                                // push позволяет добавить поле для ввода
+                                // remove удаляет поле
+                                return <div>
+                                    {phNumbers.map((phNumber, index) => <div key={index}>
+                                        <Field name={`phNumbers[${index}]`} />
+                                        <button style={{
+                                            padding: '10px',
+                                        }}
+                                                type={'button'}
+                                                onClick={() => push('')}>+
+                                        </button>
+                                        {/*Если индекс равен 0 то удалять поле ввода нельзя, если больше, то можно добавлять и удалять поля*/}
+                                        {index > 0 && <button style={{
+                                            padding: '10px 12px',
+                                        }}
+                                                              type={'button'}
+                                                              onClick={() => remove(index)}>-
+                                        </button>}
+                                    </div>)}
+                                </div>
+                            }
+                        }
+                    </FieldArray>
                 </div>
 
                 <button className={s.button} type={'submit'}>Submit</button>
